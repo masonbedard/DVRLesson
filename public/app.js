@@ -9,7 +9,7 @@ var play = function(pjs) {
     nodeC = null,
     nodeD = null,
     connections = null,
-    currentStep = 1;
+    currentStep = 0;
     
   var Node = function(id, x, y) {
       this.id = id;
@@ -20,9 +20,6 @@ var play = function(pjs) {
       this.peers = n;
   };
   Node.prototype.illustrate = function() {
-      if (currentStep === 1) {
-          return;
-      }
       pjs.fill(241,241,236, 220);
       pjs.noStroke();
       pjs.rect(this.x, this.y, nodeWidth, nodeHeight, 10);
@@ -161,6 +158,7 @@ var play = function(pjs) {
   pjs.setup = function() {
       pjs.frameRate(60);
       pjs.size(pjs.screenWidth, pjs.screenHeight);
+      var scale = Math.min(pjs.screenWidth, pjs.screenHeight);
       nodeA = new Node("a", 30,10);
       nodeB = new Node("b", 240,10);
       nodeC = new Node("c", 30, 145);
@@ -195,16 +193,26 @@ var play = function(pjs) {
 
   pjs.draw = function() {
       pjs.background(254,254,254);
-      if (currentStep > 2) {
+      var nodeSteps = 1;
+      if (currentStep > nodeSteps + 4) {
           for (var i = 0; i < connections.length; i++) {
               connections[i].illustrate();
           }
       }
       pjs.textFont("Arial", 17);
-      nodeA.illustrate();
-      nodeB.illustrate();
-      nodeC.illustrate();
-      nodeD.illustrate();
+      nodeSteps = 1;
+      if (currentStep > nodeSteps) {
+        nodeA.illustrate();
+      }
+      if (currentStep > nodeSteps + 1) {
+        nodeB.illustrate();
+      }
+      if (currentStep > nodeSteps + 2) {
+        nodeC.illustrate();
+      }
+      if (currentStep > nodeSteps + 3) {
+        nodeD.illustrate();
+      }
       illustrateCurrentStep();
       pjs.noLoop();
   };
